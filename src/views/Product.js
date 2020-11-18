@@ -1,43 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import Loader from '../component/Loader';
+import useAxiosGet from '../hooks/HttpRequest';
 
 const Product = () => {
   const { id } = useParams();
   const url = `https://5fb3b881b6601200168f7c43.mockapi.io/products/${id}`;
 
-  const [product, setProduct] = useState({
-    loading: false,
-    data: null,
-    error: false,
-  });
+  let product = useAxiosGet(url);
 
   let content = null;
-
-  useEffect(() => {
-    setProduct({
-      loading: true,
-      data: null,
-      error: false,
-    });
-    axios
-      .get(url)
-      .then((response) => {
-        setProduct({
-          loading: false,
-          data: response.data,
-          error: false,
-        });
-      })
-      .catch((error) => {
-        setProduct({
-          loading: false,
-          data: null,
-          error: true,
-        });
-      });
-  }, [url]);
 
   if (product.loading) {
     content = <Loader />;
